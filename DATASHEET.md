@@ -1,7 +1,7 @@
-##DATASHEET
-##Data Augmentation and Contextual Enrichment of Police Incident Reports Dataset
+## DATASHEET
+## Data Augmentation and Contextual Enrichment of Police Incident Reports Dataset
 
-##Motivation
+## Motivation
 
 - **Purpose of the DataSet:** Transparency, public education, research and analysis capabilities, administrative and legal demands, and community involvement were probably the main reasons for creating the dataset. It makes local incidents easier to track, contributes to public safety, helps with policy-making, and improves police department accountability.
 
