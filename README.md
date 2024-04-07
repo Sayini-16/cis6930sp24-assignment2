@@ -1,22 +1,29 @@
-## Asignment0 - Data Engineering
+## Asignment2 - CIS 6930 Spring 2024 
 
-## Author: Rajesh Uppala
+## Author: Anirudh Sayini
 
 ## Description
 
-The Norman, Oklahoma police department regularly reports incidents, arrests, and other activities. This data is distributed to the public in the form of PDF files. (https://www.normanok.gov/public-safety/police-department/crime-prevention-data/department-activity-reports)
+In this assignment, we will perform a subsequent task for the data pipeline. We will will take records from several instances of pdf files and augment the data. You will also create a Datasheet for the dataset I am creating. Reviewing the discussion from the lecturee to guide my creation of the data sheet.
 
-- To download the data given one incident pdf using url
-- To Extract the below fields:
-  - Time
+The website contains three types of summaries arrests, incidents, and case summaries. Your assignment is to build a function that collects only the incidents. To do so, you need to write Python (3) function(s) to do each of the following:
+
+- Download the data given one incident pdf
+- Extract the fields:
+  - Date / Time
   - Incident Number
   - Location
   - Nature
   - Incident ORI
-- create a SQLite database to store the data;
-- Insert the data into the database;
-- Print each nature and the number of times nature appears
-
+- Data Augmentation
+  - Day of Week: The day of week is a numeric value in the range 1-7. Where 1 corresponds to Sunday and 7 corresonds of Saturday.
+  - Time of Data: The time of data is a numeric code from 0 to 24 describing the hour of the incident.
+  - Weather: Determine the weather at the time and location of the incident. The weather is determined by the WMO CODE. The code is an integer that represents a weather position..
+  - Location Rank: Sort all listed locatiions. Give an integer ranking of the frequency of locations with ties preserved. For instance, if there is a three-way tie for the most popular location, each location will be         ranked 1; the next most popular location should be ranked 4. You can use the exact text of the location.
+  - Side of Town: The side of town is one of eight items {N, S, E, W, NW, NE, SW, SE}. Side of town is determined by approximate orientation of the center of town 35.220833, -97.443611. You can use the geopy library for      assistance.
+  - Incident Rank: Sort all of the Natures. Give an integer ranking of the frequency of natures with ties preserved. For instance, if there is a three-way tie for the most popular incident, each incident will be ranked 1; the next most popular nature should be ranked 4.
+  - Nature: The Nature is the direct text of the Nature from the source record.
+  - EMSSTAT: This is a boolean value that is True in two cases. First, if the Incident ORI was EMSSTAT or if the subsequent record or two contain an EMSSTAT at the same time and locaton.
 ## Setting up the Initial installations 
 In the project's virtual environment, we execute the following installations. 
 ~~~
