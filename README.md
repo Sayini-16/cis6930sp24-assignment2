@@ -45,7 +45,7 @@ The rest of the packages are part of the standard library, so there's no need fo
 
 The projects have below files: 
 
-## 1. Assignment2.py
+## Assignment2.py
 
 ### **extract_incident_details(raw_data, incident_list)**
 
@@ -83,16 +83,17 @@ This function retrieves data from a specified URL, posing as a web browser by se
 
 
 ## To run the Pytest : 
-Run the following command ro run the tests
+Run the following command to run the tests
 ~~~
  pipenv run python -m pytest
 ~~~
 
-## 4.Assumptions/Bugs:
+## Assumptions/Bugs:
 
 - In this project we assumed that only location and nature columns have missing values in the pdf document and we handled only the missing values in those columns, if any other column has the missing values in the pdf the code will fail. 
 - After splitting the data by date the maximum length of the list we observed is 7, if the length of list is > 7 then the code may fail in this case.
 - I assumed that among location and nature, if my data gives only list of length 4 then nature column is missing, this assumption is made after looking into the files, but if location is missed instead of nature then this code will fail.
+- Sometimes the locations extractions the wrong address and we will be restricted to a number of requests per session.
 
 
 ## Steps to Run Assignment0
@@ -106,7 +107,7 @@ Navigate to directory that we cloned from git and run the below command to insta
 - **Step2** \
 Then run the below command by providing URL
 
-> pipenv run python assignment0/main.py --incidents **URL**
+> pipenv run python assignment2.py --url files.csv
 
 - **Step3** 
 
