@@ -24,6 +24,7 @@ The website contains three types of summaries arrests, incidents, and case summa
   - Incident Rank: Sort all of the Natures. Give an integer ranking of the frequency of natures with ties preserved. For instance, if there is a three-way tie for the most popular incident, each incident will be ranked 1; the next most popular nature should be ranked 4.
   - Nature: The Nature is the direct text of the Nature from the source record.
   - EMSSTAT: This is a boolean value that is True in two cases. First, if the Incident ORI was EMSSTAT or if the subsequent record or two contain an EMSSTAT at the same time and locaton.
+
 ## Setting up the Initial installations 
 In the project's virtual environment, we execute the following installations. 
 ~~~
@@ -34,11 +35,14 @@ The rest of the packages are part of the standard library, so there's no need fo
 
 ## Packages Required:
 
-- requests
-- sqlite3
-- pypdf
-- re
-- io
+-request
+-tempfile
+-PyPDF2
+-geopy.geocoders import ArcGIS
+-openmeteo_requests
+-requests_cache
+-retry_requests import retry
+
 
 \
 ## Video Link : https://github.com/rajeshuppala1449/cis6930sp24-assignment0/assets/48644047/54e895e9-a13d-403a-8a50-45f801182985
