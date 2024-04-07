@@ -81,7 +81,7 @@ This function retrieves data from a specified URL, posing as a web browser by se
 
 ![image](https://github.com/Sayini-16/cis6930sp24-assignment2/assets/81869410/a2be73d6-9548-4850-bbe3-893035bc4634)
 
-<br>
+
 ## To run the Pytest : 
 Run the following command ro run the tests
 ~~~
