@@ -56,61 +56,32 @@ The function extracts incident data from a PDF, using PyPDF2 to read and extract
 This function determines a location's direction relative to a town's center using latitude and longitude. It calculates the bearing angle from the center and maps this to one of the eight cardinal directions (N, NE, E, SE, S, SW, W, NW) to represent the location's side in the town.
 ![image](https://github.com/Sayini-16/cis6930sp24-assignment2/assets/81869410/33f84c03-c852-444e-91b8-0d51645f6689)
 
-### **parsePage(text,incidentList)**
-
-The **parsePage** function is designed to parse through lines of text from a document, extracting specific information about incidents to populate an incident list. Each line is analyzed to identify and extract key pieces of information based on patterns defined by regular expressions. The extracted details include the time of the incident, the incident number, the location (address), the nature of the incident, and the Originating Agency Identifier (ORI). These details are then compiled into a list that represents a single incident record. The function operates as follows:
-
-**Time Extraction:** Searches each line for a time pattern (e.g., "HH:MM") using a regular expression. If a match is found, the time is recorded.
-
-**Nature of Incident:** If the time is not found (indicating the line doesn't contain the time of an incident), the function then looks for the nature of the incident. This search is based on a pattern that expects one or more capital letters followed by lowercase letters, possibly separated by spaces or slashes, indicating the type of incident (e.g., "Theft", "Assault").
-
-**Incident Number Extraction:** Independently of the time and nature, searches for an incident number formatted as "YYYY-NNNNNNNN".
-
-**Address Extraction:** After identifying an incident number, it looks for the address or location of the incident. This could be a specific format (numbers, letters, slashes, dashes, spaces) or a placeholder ("<UNKNOWN>") if the location is not specified.
-
-**Nature of Incident:** If the initial nature search was not successful, it conducts a more focused search for the nature of the incident based on specific keywords ("COP", "MVA", "EMS", "911"), followed by additional descriptive text.
-
-**ORI Extraction:** Searches for specific ORI codes within the line, which are unique codes assigned to agencies.
-
-Constructs a list with the extracted time, incident number, address, nature, and ORI, and appends this list to incidentList, which accumulates all incident records.
-This function systematically breaks down each line of text to extract and organize critical information about incidents into a structured format, facilitating further analysis or record-keeping.
+### **find_nature_rank(incidents)**
+This function ranks incident types based on their frequency in a list of incidents. It counts occurrences, sorts the incident types by frequency (and alphabetically for ties), then assigns a rank to each, with the most frequent getting the lowest rank. The function returns a dictionary mapping each incident type to its rank.
+![image](https://github.com/Sayini-16/cis6930sp24-assignment2/assets/81869410/45d9db5d-7123-4288-a778-a4e3cccda22e)
 
 
+### **find_loc_rank(incidents)**
+This function calculates and assigns ranks to different locations based on the frequency of incidents occurring there. It counts each location's occurrences, sorts them by frequency (and alphabetically for ties), and assigns ranks, with the most frequent location being ranked the highest. The output is a dictionary mapping each location to its rank.
+![image](https://github.com/Sayini-16/cis6930sp24-assignment2/assets/81869410/c684053b-abcd-4761-9ac0-63eb51f5a1e1)
 
-**Handling missing files**
-<br>
-In some cases, the address and nature fields in the incident data rows are missing. When these fields are identified as empty through regex extraction, they are then assigned an empty string to ensure consistency in the data format.
+### **retrieve_weather_code(location, date, weather_api, hour)**
+This function retrieves the weather code for a given location and date, at a specified hour, using a weather API. It constructs a query with location coordinates and date, makes an API call, then parses the response to extract the weather code for the specified hour, returning this specific code.
 
-### **createdb(path)**
+![image](https://github.com/Sayini-16/cis6930sp24-assignment2/assets/81869410/5c2d2fce-5a37-4eaf-88fb-cc60da278758)
 
-
-The createdb function is designed to create a new SQLite database for storing incident records. It takes a file path as its argument, which specifies where the SQLite database file should be created or opened if it already exists. Here's a step-by-step breakdown of what the function does:
--Connect to the SQLite Database
--Create Cursor Object
--Drop Existing Table (if exists)
--Create incidents Table
--Return Connection
-
-![image](https://github.com/rajeshuppala1449/EPAM_git/assets/48644047/da903d11-bb11-4ccc-bf31-f04dc4e6ad19)
 <br>
 
-The function then executes a multi-line SQL command to create a new table named incidents if it does not already exist. The table is structured with five columns to store the incident time (incident_time), incident number (incident_number), incident location (incident_location), the nature of the incident (nature), and the Originating Agency Identifier (incident_ori).
+### **process_incident_data(incident_records)**
+This function processes incident records, adding contextual information like weather conditions, geographical details, and incident rankings. It geocodes locations, retrieves weather codes for specific times, and calculates rankings for incident nature and locations. Each record is enriched with this additional data, including the day of the week, hour of the incident, weather conditions, location ranking, town side, nature ranking, and an EMS status flag, then added to a results list for analysis.
+![image](https://github.com/Sayini-16/cis6930sp24-assignment2/assets/81869410/dec4765c-fe21-46e6-a336-d41668a6a07f)
+<be>
+### **retrieve_incident_data(target_url)**
+This function retrieves data from a specified URL, posing as a web browser by setting a user-agent in the request header. It fetches the data using a GET request and returns the fetched data, allowing for the retrieval of web content that might require a browser-like request for access.
 
-### **populatedb(conn, incidentList)**
+![image](https://github.com/Sayini-16/cis6930sp24-assignment2/assets/81869410/a2be73d6-9548-4850-bbe3-893035bc4634)
 
-The populatedb function is designed to insert a list of incident records into an existing SQLite database table named incidents. It takes two parameters: conn, a SQLite connection object representing an open connection to the database, and incidentList, a list of tuples where each tuple contains data for a single incident record. 
-
-![image](https://github.com/rajeshuppala1449/EPAM_git/assets/48644047/dbc2bd1a-7741-4ab9-8bf6-01c2f4344cff)
 <br>
-
-This function returns conn.total_changes, which is an attribute of the SQLite connection object that indicates the total number of database rows that have been modified, inserted, or deleted since the database connection was opened. In the context of this function, it reflects the number of incident records successfully inserted into the database by this operation.
-
-### **status(conn)**
-
-The status function queries an SQLite database to summarize the occurrence frequency of different incident natures within the incidents table. It accomplishes this by creating a cursor from the given connection (conn), executing a SQL query to group incidents by their nature and count the occurrences of each group, then fetching the results. These results are sorted in descending order by count and, if counts are equal, alphabetically by nature. After sorting, the function formats these grouped counts into a list of strings, each representing a unique incident nature followed by its occurrence count, separated by a pipe symbol (|). Finally, the database connection is closed, and the formatted list is returned, providing a concise summary of incident data grouped by nature.
-![image](https://github.com/rajeshuppala1449/EPAM_git/assets/48644047/347b2ac1-d98c-40bf-8438-8d6356c5187a)
-<br>
-
 ## To run the Pytest : 
 Run the following command ro run the tests
 ~~~
