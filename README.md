@@ -43,33 +43,18 @@ The rest of the packages are part of the standard library, so there's no need fo
 - requests_cache
 - retry_requests import retry
 
-
-\
-## Video Link : https://github.com/rajeshuppala1449/cis6930sp24-assignment0/assets/48644047/54e895e9-a13d-403a-8a50-45f801182985
 The projects have below files: 
-## 1. main.py 
- 
-assignment0.py is imported into this file.
-This file will get the url as argument. 
-Functions for extracting data, parsing data and printing the data is present in assignment0 module. These functions are called from this file.
 
-## 2. Assignment0.py
+## 1. Assignment2.py
 
-### **fetchincidents(url)**
+### **extract_incident_details(raw_data, incident_list)**
 
-This function downloads a PDF document from a given URL
-Makes an HTTP GET request to the specified URL to retrieve the PDF, then reads the PDF into a PdfReader object for processing.
+The function extracts incident data from a PDF, using PyPDF2 to read and extract text from each page. It refines this text, addressing formatting issues and special data structures, then categorizes incidents, particularly marking some as 'EMSSTAT' based on their content. Finally, it appends the processed data to a provided incident list.
+![image](https://github.com/Sayini-16/cis6930sp24-assignment2/assets/81869410/80092789-8b21-4120-8298-2033ef0f3edc)
 
-### **extractincidents(incident_data)**
-
-Extracts incident information from all pages of the provided PDF document.
-Iterates through each page of the PDF, extracting text and processing it through parsePage to compile a comprehensive list of incidents.
-
-On the first page and last page of pdf, some unnecessary text is removed using following logic
-
-![image](https://github.com/rajeshuppala1449/EPAM_git/assets/48644047/adb1b3fb-5b13-40e9-8431-ce467812d23b)
-
-Entire page is coverted to lines, these lines are passed to parsePage() function to get incidnets list.
+### **find_side_of_town(lat, lon)**
+This function determines a location's direction relative to a town's center using latitude and longitude. It calculates the bearing angle from the center and maps this to one of the eight cardinal directions (N, NE, E, SE, S, SW, W, NW) to represent the location's side in the town.
+![image](https://github.com/Sayini-16/cis6930sp24-assignment2/assets/81869410/33f84c03-c852-444e-91b8-0d51645f6689)
 
 ### **parsePage(text,incidentList)**
 
