@@ -35,13 +35,13 @@ The rest of the packages are part of the standard library, so there's no need fo
 
 ## Packages Required:
 
--request
--tempfile
--PyPDF2
--geopy.geocoders import ArcGIS
--openmeteo_requests
--requests_cache
--retry_requests import retry
+- request
+- tempfile
+- PyPDF2
+- geopy.geocoders import ArcGIS
+- openmeteo_requests
+- requests_cache
+- retry_requests import retry
 
 
 \
