@@ -1,10 +1,10 @@
      DATASHEET
-Data Augmentation and Contextual Enrichment of Police Incident Reports Dataset
+##Data Augmentation and Contextual Enrichment of Police Incident Reports Dataset
 
-Motivation
+##Motivation
 
-Purpose of the DataSet:
-Transparency, public education, research and analysis capabilities, administrative and legal demands, and community involvement were probably the main reasons for creating the dataset. It makes local incidents easier to track, contributes to public safety, helps with policy-making, and improves police department accountability.
+- **Purpose of the DataSet:**
+-      Transparency, public education, research and analysis capabilities, administrative and legal demands, and community involvement were probably the main reasons for creating the dataset. It makes local incidents easier to track, contributes to public safety, helps with policy-making, and improves police department accountability.
 
 Funding Sources and Grant Details for Dataset Creation:
 The local government of Norman, Oklahoma most likely provides funding for the dataset, which is a daily incident report from the Norman Police Department. These kinds of datasets are usually supported by the city's budget, which includes public monies allotted to public safety and law enforcement, and are a normal aspect of police department operations.
