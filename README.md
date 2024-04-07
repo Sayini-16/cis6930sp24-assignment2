@@ -30,7 +30,7 @@ In the project's virtual environment, we execute the following installations.
 ~~~
 pipenv install pypdf
 ~~~
-The rest of the packages are part of the standard library, so there's no need for separate installations; they only need to be imported into the script.
+The some of the packages are part of the standard library, and some need separate installations; they only need to be imported into the script.
 
 
 ## Packages Required:
@@ -96,7 +96,7 @@ Run the following command to run the tests
 - Sometimes the locations extractions the wrong address and we will be restricted to a number of requests per session.
 
 
-## Steps to Run Assignment0
+## Steps to Run Assignment2
 
 
 - **Step1** \
