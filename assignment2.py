@@ -69,64 +69,94 @@ def extract_incident_details(raw_data, incident_list):
     incident_list.extend(extracted_data)
     return incident_list
 
-# Define a function to determine the side of the town based on latitude and longitude.
+import math
+
 def find_side_of_town(lat, lon):
-    # Define the center point coordinates.
-    center_lat = 35.220833
-    center_lon = -97.443611
-    # Calculate the differences in coordinates.
-    delta_lon = lon - center_lon
-    delta_lat = lat - center_lat
-    # Calculate the bearing using the arctangent function.
-    bearing = (atan2(delta_lon, delta_lat) * 180 / pi + 360) % 360
-    # Determine the corresponding direction based on the bearing.
-    index = int(round(bearing / 45)) % 8
+    """
+    Determines the side of the town based on the given latitude and longitude coordinates.
+
+    Args:
+        lat (float): The latitude coordinate.
+        lon (float): The longitude coordinate.
+
+    Returns:
+        str: A string representing the side of the town (N, NE, E, SE, S, SW, W, NW).
+    """
+    # Define the center point coordinates
+    CENTER_LAT = 35.220833
+    CENTER_LON = -97.443611
+
+    # Calculate the differences in coordinates
+    delta_lon = lon - CENTER_LON
+    delta_lat = lat - CENTER_LAT
+
+    # Calculate the bearing angle in degrees
+    bearing = (math.atan2(delta_lon, delta_lat) * 180 / math.pi + 360) % 360
+
+    # Determine the corresponding direction based on the bearing angle
     directions = ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW']
+    index = int(round(bearing / 45)) % 8
     side_of_town = directions[index]
+
     return side_of_town
 
-# Define a function to rank the nature of incidents.
 def find_nature_rank_loc_rank(incidents):
-    # Initialize a dictionary to count occurrences of each nature type.
-    nature_dict = defaultdict(int)
+    """
+    Ranks the nature types and locations based on their frequency in the given incidents.
+
+    Args:
+        incidents (list): A list of incidents, where each incident is a list containing information about the incident.
+                          The nature type is expected to be at index -2, and the location at index 2.
+
+    Returns:
+        tuple: A tuple containing two dictionaries:
+            1. nature_ranks: A dictionary mapping nature types to their ranks based on frequency.
+            2. loc_ranks: A dictionary mapping locations to their ranks based on frequency.
+    """
+    # Rank nature types by frequency
+    nature_freq = defaultdict(int)
     for incident in incidents:
-        nature_dict[incident[-2]] += 1
-    # Sort the nature types based on their frequency.
-    nature_keys = nature_dict.keys()
-    sorted_natures = sorted(nature_keys, key=lambda x: (-nature_dict[x], x))
-    # Assign ranks to each nature type based on their sorted order.
-    previous_freq=-1
-    rank_counter = 1
-    count=0
-    for nature in sorted_natures:
-        count+=1
-        x = nature_dict[nature]
-        if(x!=previous_freq):
-            rank_counter = rank_counter+count
-            count= 0
-            previous_freq = x
-        nature_dict[nature] = rank_counter
-    
-    # Initialize a dictionary to count occurrences of each location.
-    loc_dict = defaultdict(int)
+        nature_freq[incident[-2]] += 1  # Count occurrences of each nature type
+
+    sorted_natures = sorted(nature_freq.items(), key=lambda x: (-x[1], x[0]))
+    nature_ranks = _assign_ranks(sorted_natures)
+
+    # Rank locations by frequency
+    loc_freq = defaultdict(int)
     for incident in incidents:
-        loc_dict[incident[2]] += 1
-    # Sort the locations based on their frequency.
-    locations = loc_dict.keys()
-    sorted_locations = sorted(locations, key=lambda x: (-loc_dict[x], x))
-    # Assign ranks to each location based on their sorted order.
-    previous_freq=-1
-    rank_counter = 1
-    count=0
-    for location in sorted_locations:
-        count +=1
-        x = loc_dict[location]
-        if(x!=previous_freq):
-            rank_counter = rank_counter + count
-            count = 0
-            previous_freq = x
-        loc_dict[location] = rank_counter
-    return nature_dict, loc_dict
+        loc_freq[incident[2]] += 1  # Count occurrences of each location
+
+    sorted_locations = sorted(loc_freq.items(), key=lambda x: (-x[1], x[0]))
+    loc_ranks = _assign_ranks(sorted_locations)
+
+    return nature_ranks, loc_ranks
+
+def _assign_ranks(sorted_items):
+    """
+    Assigns ranks to the given items based on their frequency.
+
+    Args:
+        sorted_items (list): A list of (item, frequency) tuples, sorted by frequency in descending order.
+
+    Returns:
+        dict: A dictionary mapping each item to its rank based on frequency.
+    """
+    ranks = {}
+    prev_freq = None
+    rank = 0
+    freq_count = 0
+
+    for item, freq in sorted_items:
+        if freq != prev_freq:
+            rank += freq_count  # Update rank based on previous group of items with the same frequency
+            freq_count = 0
+            prev_freq = freq
+
+        freq_count += 1
+        ranks[item] = rank + freq_count  # Assign rank to the current item
+
+    return ranks
+
 
 # Define a function to retrieve the weather code for a specific location and time.
 def retrieve_weather_code(location, date, weather_api, hour):
@@ -234,4 +264,5 @@ if __name__ == '__main__':
     parsed_args = argument_parser.parse_args()
     if parsed_args.urls:
         run_process(parsed_args.urls)
+
 
