@@ -86,7 +86,7 @@ def find_side_of_town(lat, lon):
     return side_of_town
 
 # Define a function to rank the nature of incidents.
-def find_nature_rank(incidents):
+def find_nature_rank_loc_rank(incidents):
     # Initialize a dictionary to count occurrences of each nature type.
     nature_dict = defaultdict(int)
     for incident in incidents:
@@ -106,10 +106,7 @@ def find_nature_rank(incidents):
             count= 0
             previous_freq = x
         nature_dict[nature] = rank_counter
-    return nature_dict
-
-# Define a function to rank locations based on the number of incidents.
-def find_loc_rank(incidents):
+    
     # Initialize a dictionary to count occurrences of each location.
     loc_dict = defaultdict(int)
     for incident in incidents:
@@ -129,7 +126,7 @@ def find_loc_rank(incidents):
             count = 0
             previous_freq = x
         loc_dict[location] = rank_counter
-    return loc_dict
+    return nature_dict, loc_dict
 
 # Define a function to retrieve the weather code for a specific location and time.
 def retrieve_weather_code(location, date, weather_api, hour):
@@ -163,8 +160,7 @@ def process_incident_data(incident_records):
     # Initialize a client for the Open Meteo service.
     meteo_client = openmeteo_requests.Client(session=retried_session)
     # Rank the nature and location of incidents.
-    nature_ranking = find_nature_rank(incident_records)
-    location_ranking = find_loc_rank(incident_records)
+    nature_ranking,location_ranking= find_nature_rank_loc_rank(incident_records)
 
     # Process each record to enrich it with additional contextual data.
     for record in incident_records:
@@ -238,3 +234,4 @@ if __name__ == '__main__':
     parsed_args = argument_parser.parse_args()
     if parsed_args.urls:
         run_process(parsed_args.urls)
+
