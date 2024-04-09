@@ -95,11 +95,17 @@ def find_nature_rank(incidents):
     nature_keys = nature_dict.keys()
     sorted_natures = sorted(nature_keys, key=lambda x: (-nature_dict[x], x))
     # Assign ranks to each nature type based on their sorted order.
-    rank = 1
+    previous_freq=-1
+    rank_counter = 1
+    count=0
     for nature in sorted_natures:
-        count = nature_dict[nature]
-        nature_dict[nature] = rank
-        rank += count
+        count+=1
+        x = nature_dict[nature]
+        if(x!=previous_freq):
+            rank_counter = rank_counter+count
+            count= 0
+            previous_freq = x
+        nature_dict[nature] = rank_counter
     return nature_dict
 
 # Define a function to rank locations based on the number of incidents.
@@ -112,11 +118,17 @@ def find_loc_rank(incidents):
     locations = loc_dict.keys()
     sorted_locations = sorted(locations, key=lambda x: (-loc_dict[x], x))
     # Assign ranks to each location based on their sorted order.
+    previous_freq=-1
     rank_counter = 1
+    count=0
     for location in sorted_locations:
-        occurrence = loc_dict[location]
+        count +=1
+        x = loc_dict[location]
+        if(x!=previous_freq):
+            rank_counter = rank_counter + count
+            count = 0
+            previous_freq = x
         loc_dict[location] = rank_counter
-        rank_counter += occurrence
     return loc_dict
 
 # Define a function to retrieve the weather code for a specific location and time.
@@ -180,7 +192,7 @@ def process_incident_data(incident_records):
         # Compile the enriched data into a row and add it to the results.
         temp_row.extend([adjusted_week_day, hour_of_incident, weather_condition_code, location_ranking[record[2]], town_side, nature_ranking[record[-2]], record[-2], record[-1] == 'EMSSTAT'])
         results.append(temp_row)
-        print(temp_row)
+        #print(temp_row)
     return results
 
 # Define a function to retrieve incident data from a given URL.
@@ -214,6 +226,8 @@ def run_process(file_path):
         collected_incidents = extract_incident_details(incident_data, collected_incidents)
     # Process and print the collected incident data.
     processed_data = process_incident_data(collected_incidents)
+    data_labels = ["Day of the Week","Time of Day","Weather","Location Rank","Side of Town","Incident Rank","Nature","EMSSTAT"]
+    print('\t'.join(data_labels))
     for data_row in processed_data:
         print('\t'.join(map(str, data_row)))
 
